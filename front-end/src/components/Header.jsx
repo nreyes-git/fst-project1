@@ -1,77 +1,71 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { FaShoppingCart, FaUserCircle } from "react-icons/fa"; // Icons
+import rivan_logo from "../assets/react.svg";
+import { AuthContext } from "../context/AuthProvider";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated } = useContext(AuthContext);
 
   return (
-    <header className="w-full bg-white shadow-sm">
-      <nav className="container mx-auto flex items-center justify-between px-4 py-3">
-        {/* Logo */}
-        <div className="text-xl font-bold text-gray-900">MYBRAND</div>
+    <header className="flex justify-around items-center px-8 py-4 shadow-md">
+      {/* Logo Section */}
+      <Link to="/">
+        <div className="flex items-center space-x-2">
+          <img src={rivan_logo} alt="Logo" className="w-15 h-15" />
+          <span className="font-bold text-xl">MYSHOP</span>
+        </div>
+      </Link>
 
-        {/* Hamburger Icon (Mobile) */}
-        <button
-          className="md:hidden text-gray-800 focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
+      {/* Buttons */}
+      <div className="flex items-center space-x-3">
+        {/* Navigation */}
+        <nav className="flex items-center space-x-6 text-sm">
+          <Link to="/" className="hover:text-primary-hover">
+            Home
+          </Link>
+          <Link to="/products" className="hover:text-primary-hover">
+            Products
+          </Link>
+          <Link to="#" className="hover:text-primary-hover">
+            Team
+          </Link>
+        </nav>
 
-        {/* Nav Links */}
-        <ul
-          className={`${
-            isOpen ? "block" : "hidden"
-          } absolute top-14 left-0 w-full bg-white md:static md:flex md:space-x-8 md:w-auto md:items-center`}
-        >
-          <li>
+        {/* Icons */}
+        {isAuthenticated ? (
+          <>
             <Link
-              to="/"
-              className="block px-4 py-2 text-gray-700 hover:text-blue-700"
+              to="/cart"
+              className="text-xl text-primary hover:text-primary-hover"
             >
-              Home
+              <FaShoppingCart />
             </Link>
-          </li>
-          <li>
             <Link
-              to="/products"
-              className="block px-4 py-2 text-gray-700 hover:text-blue-700"
+              to="/profile"
+              className="text-xl text-primary hover:text-primary-hover"
             >
-              Products
+              <FaUserCircle />
             </Link>
-          </li>
-          <li>
+          </>
+        ) : (
+          <>
+            {/* Auth Buttons */}
             <Link
-              href="#teams"
-              className="block px-4 py-2 text-gray-700 hover:text-blue-700"
+              to="/register"
+              className="border border-primary text-primary px-4 py-1 rounded-full hover:bg-blue-50 text-sm"
             >
-              Teams
+              Register
             </Link>
-          </li>
-
-          {/* Buttons (show inline on desktop, stacked on mobile) */}
-          <div className="flex flex-col md:flex-row md:space-x-3 mt-2 md:mt-0 px-4 md:px-0">
-            <button className="px-4 py-2 border border-blue-700 text-blue-700 rounded-md hover:bg-blue-50">
-              Log In
-            </button>
-            <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-800 mt-2 md:mt-0">
-              Sign Up
-            </button>
-          </div>
-        </ul>
-      </nav>
+            <Link
+              to="/login"
+              className="bg-primary text-white px-4 py-1 rounded-full hover:bg-primary-hover text-sm"
+            >
+              Sign In
+            </Link>
+          </>
+        )}
+      </div>
     </header>
   );
 };
